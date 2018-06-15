@@ -1,54 +1,51 @@
 //index.js
 //获取应用实例
 const app = getApp()
-
+var imgArr = ['f1', 'f3', 'f4', 'f5', 'f6', 'n2', 't1', 't2'];
+var imgIndex = 0;
 Page({
   data: {
     motto: 'Hello World',
-    userInfo: {},
-    hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    imageSelected: [false, false],
+    imageList: ['../../image/' + imgArr[imgIndex++] + '.jpg', '../../image/' + imgArr[imgIndex++] + '.jpg'],
+    changeImage: false
   },
   //事件处理函数
-  bindViewTap: function() {
-    wx.navigateTo({
-      url: '../logs/logs'
-    })
-  },
-  onLoad: function () {
-    if (app.globalData.userInfo) {
-      this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
-      })
-    } else if (this.data.canIUse){
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        })
-      }
+  handleImageSelected: function (e) {
+    if (imgIndex >= imgArr.length-1) {
+      console.log('over');
+      return ;
+    }
+    var t = e.currentTarget;
+    var data = t.dataset;
+    var num = data.num;
+
+    if (num == 0) {
+      this.setData({ 'imageSelected[0]': true});
+      setTimeout(()=> {
+        changeImages(this, num);
+      }, 540);
     } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          })
-        }
-      })
+      this.setData({ 'imageSelected[1]': true });
+      setTimeout(() => {
+        changeImages(this, num);
+      }, 540);
     }
   },
-  getUserInfo: function(e) {
-    console.log(e)
-    app.globalData.userInfo = e.detail.userInfo
-    this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
-    })
+  onLoad: function () {
+
   }
-})
+});
+
+function changeImages(that, num) {
+  var img1 = '../../image/' + imgArr[imgIndex++] + '.jpg';
+  var img2 = '../../image/' + imgArr[imgIndex++] + '.jpg';
+  that.setData({'changeImage': true});
+  setTimeout(()=> {
+    var imageSelected = 'imageSelected[' + num + ']';
+    that.setData({ imageSelected: false });
+    that.setData({ 'imageList[0]': img1});
+    that.setData({ 'imageList[1]': img2});
+    that.setData({ 'changeImage': false });
+  }, 1000);
+}

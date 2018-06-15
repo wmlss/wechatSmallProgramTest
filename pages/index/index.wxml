@@ -1,13 +1,28 @@
 <!--index.wxml-->
-<view class="container">
-  <view class="userinfo">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-    </block>
+<view class="">
+
+  <view class="wrap-image">
+    <view class="wrap-image1 {{changeImage?'animation-change':''}}">
+      <image src="{{imageList[0]}}"  mode="aspectFit" class=""
+        bind:tap="handleImageSelected" data-num='0'></image>
+      <view wx:if="{{imageSelected[0]}}" id="selected-image1" 
+       class="selected-image {{imageSelected[0]?'animation-show':''}}">
+        <icon type="success_no_circle" size="100"/>
+      </view>
+    </view>
+      
+    <view class="wrap-image2 {{changeImage?'animation-change':''}}">
+      <image src="{{imageList[1]}}"  mode="aspectFit" class="" 
+        bind:tap="handleImageSelected" data-num='1'></image>
+      <view wx:if="{{imageSelected[1]}}" id="selected-image2"
+       class="selected-image {{imageSelected[1]?'animation-show':''}}">
+        <icon type="success_no_circle" size="100"/>
+      </view>
+    </view>
   </view>
-  <view class="usermotto">
-    <text class="user-motto">{{motto}}</text>
+
+  <view class="hello-text">
+    <text class="user-motto">请选择你喜欢的图</text>
   </view>
+
 </view>
